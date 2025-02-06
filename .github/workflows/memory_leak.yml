@@ -15,7 +15,7 @@ jobs:
 
     - name: Compile the C program
       run: |
-        sudo apt-install valgrind -y
+        sudo apt install valgrind -y
         gcc -o test main.c
 
     - name: Run Valgrind to check for memory leaks
