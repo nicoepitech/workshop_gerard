@@ -1,0 +1,28 @@
+name: Memory Leak Check
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check-memory-leaks:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Compile the C program
+      run: |
+        gcc -o test main.c
+
+    - name: Run Valgrind to check for memory leaks
+      run: |
+        valgrind --leak-check=full --error-exitcode=1 ./test 2>&1 | grep "definitely lost"
+
+    - name: Fail if memory leaks are found
+      if: ${{ failure() }}
+      run: |
+        echo "Memory leaks detected! Check the Valgrind output above."
+        exit 1
