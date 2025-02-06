@@ -20,7 +20,8 @@ jobs:
 
     - name: Run Valgrind to check for memory leaks
       run: |
-        valgrind --leak-check=full --error-exitcode=1 ./test 2>&1 | grep "definitely lost"
+        valgrind_output=$(valgrind --leak-check=full --error-exitcode=1 ./my_program 2>&1)
+        echo "$valgrind_output"
 
     - name: Fail if memory leaks are found
       if: ${{ failure() }}
